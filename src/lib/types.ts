@@ -10,9 +10,7 @@ export type GetState<T> = {
   (): T
 }
 
-export type ElementAttributes = {
-  [key: string]: string
-}
+export type ElementAttributes = Record<string, string>
 
 export type LibEventListener = {
   listener: EventListener

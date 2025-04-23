@@ -13,12 +13,13 @@ type ConvertedRouteDescriptions = (Omit<RouteDescriptions[number], "page"> & {
 
 class Router {
   private parent: HTMLElement
-  private routeDescriptions!: ConvertedRouteDescriptions
+  private routeDescriptions: ConvertedRouteDescriptions
   private errorPage: HTMLElement
 
   constructor() {
     this.parent = document.body
     this.errorPage = convertComponent(DefaultErrorPage())
+    this.routeDescriptions = []
   }
 
   private match(pathname: string) {

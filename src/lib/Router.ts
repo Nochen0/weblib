@@ -1,25 +1,23 @@
+import { type Component } from "./Component.js"
 import DefaultErrorPage from "./DefaultErrorPage.js"
-import { convertComponent } from "./Lib.js"
-import { LibComponent } from "./types.js"
+import Renderer from "./Renderer.js"
 
-type RouteDescriptions = {
+export type RouteDescriptions = {
   route: string
-  page: LibComponent
+  page: Component | HTMLElement
 }[]
-
-type ConvertedRouteDescriptions = (Omit<RouteDescriptions[number], "page"> & {
-  page: HTMLElement | LibComponent
-})[]
 
 class Router {
   private parent: HTMLElement
-  private routeDescriptions: ConvertedRouteDescriptions
-  private errorPage: HTMLElement
+  private routeDescriptions: RouteDescriptions
+  private errorPage: Component
+  private renderer: Renderer
 
-  constructor() {
+  constructor(renderer: Renderer) {
     this.parent = document.body
-    this.errorPage = convertComponent(DefaultErrorPage())
+    this.errorPage = DefaultErrorPage
     this.routeDescriptions = []
+    this.renderer = renderer
   }
 
   private match(pathname: string) {
@@ -36,11 +34,7 @@ class Router {
     if (page instanceof HTMLElement) {
       this.parent.appendChild(page)
     } else {
-      const convertedElement = convertComponent(page())
-      this.routeDescriptions[
-        this.routeDescriptions.findIndex(({ route }) => route === pathname)
-      ].page = convertedElement
-      this.parent.appendChild(convertedElement)
+      this.parent.appendChild(this.renderer.buildTree(page()))
     }
   }
 
@@ -51,9 +45,9 @@ class Router {
     history.replaceState({ route: location.pathname }, "", location.pathname)
     addEventListener(
       "popstate",
-      function (this: InstanceType<typeof Router>, event: PopStateEvent) {
+      function (this: Router, event: PopStateEvent) {
         this.go(event.state.route, false)
-      }.bind(this)
+      }.bind(this),
     )
     this.routeDescriptions = descriptions
     this.init()
@@ -70,17 +64,16 @@ class Router {
     if (page instanceof HTMLElement) {
       this.parent.replaceChildren(page)
     } else {
-      const convertedElement = convertComponent(page())
-      this.routeDescriptions[
-        this.routeDescriptions.findIndex(
-          ({ route: _route }) => _route === route
-        )
-      ].page = convertedElement
-      this.parent.replaceChildren(convertedElement)
+      const builtElement = this.renderer.buildTree(page())
+
+      this.routeDescriptions.find((x) => x.route === route)!.page = builtElement
+
+      this.parent.replaceChildren(builtElement)
     }
     scrollX = 0
     scrollY = 0
   }
 }
 
-export default new Router()
+const renderer = new Renderer()
+export default new Router(renderer)

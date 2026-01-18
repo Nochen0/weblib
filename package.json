@@ -1,17 +1,16 @@
 {
   "name": "weblib",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm tsc --outDir build"
+    "build": "bun tsc --watch src/*.ts --outDir build",
+    "serve": "bun --watch index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.4.1",
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

@@ -1,17 +1,22 @@
-import { Button, Div } from "./Elements.js"
-import router from "./Router.js"
-import { LibComponent } from "./types.js"
+import { Button, Div } from "./CommonElements.js"
+import type { Component } from "./Component.js"
+import Router from "./Router.js"
 
-const DefaultErrorPage: LibComponent = () => {
+const DefaultErrorPage: Component = () => {
   function handleLink() {
-    router.go("/src/")
+    Router.go("/")
   }
 
   return {
-    parent: Div(null),
+    elem: Div(),
     children: [
-      { parent: Div("Error not found 404") },
-      { parent: Button("Home", {}, { click: [{ listener: handleLink }] }) },
+      { elem: Div({ textContent: "Page not found 404" }) },
+      {
+        elem: Button({
+          textContent: "Home",
+          eventListeners: { click: [{ listener: handleLink }] },
+        }),
+      },
     ],
   }
 }

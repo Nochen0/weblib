@@ -9,7 +9,7 @@ function App() {
         { route: "/", page: HomePage_js_1.default },
         {
             route: "/testpage",
-            page: (0, Component_js_1.withProps)(TestPage_js_1.default, { message: "message1" }),
+            page: (0, Component_js_1.withProps)(TestPage_js_1.default, { message: "MessageProp" }),
         },
     ];
     Router_js_1.default.setup(routes, document.body);

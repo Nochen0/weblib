@@ -8,7 +8,7 @@ function App() {
     { route: "/", page: HomePage },
     {
       route: "/testpage",
-      page: withProps(TestPage, { message: "message1" }),
+      page: withProps(TestPage, { message: "MessageProp" }),
     },
   ]
   Router.setup(routes, document.body)

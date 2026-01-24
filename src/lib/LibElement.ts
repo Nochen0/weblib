@@ -54,6 +54,22 @@ export class LibElement<T extends TagNameKeys> {
     this.element.removeAttribute(key)
   }
 
+  public appendChild(node: LibElement<any>) {
+    this.element.appendChild(node.element)
+  }
+
+  public replaceWith(node: LibElement<any>) {
+    this.element.replaceWith(node.element)
+  }
+
+  public remove() {
+    this.element.remove()
+  }
+
+  public insertAdjacentElement(where: InsertPosition, node: LibElement<any>) {
+    this.element.insertAdjacentElement(where, node.element)
+  }
+
   private toHTMLElement(
     tagName: T,
     optionals?: LibElementOptionalType,

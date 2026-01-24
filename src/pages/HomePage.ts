@@ -1,6 +1,7 @@
 import { Button, Div } from "../lib/CommonElements.js"
 import type { Component } from "../lib/Component.js"
 import Router from "../lib/Router.js"
+import List from "./List.js"
 
 const HomePage: Component = () => {
   return {
@@ -10,6 +11,7 @@ const HomePage: Component = () => {
         textContent: "Go to Test",
         eventListeners: { click: [{ listener: () => Router.go("/testpage") }] },
       }),
+      List(),
     ],
   }
 }

@@ -19,7 +19,7 @@ const TestPage: Component<Props> = ({ message }) => {
       Div({
         textContent: message,
         eventListeners: {
-          click: [{ listener: () => console.log("div4 click" + message) }],
+          click: [{ listener: () => console.log("div2 click" + message) }],
         },
       }),
       Button({

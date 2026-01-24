@@ -16,7 +16,7 @@ var TestPage = function (_a) {
             (0, CommonElements_js_1.Div)({
                 textContent: message,
                 eventListeners: {
-                    click: [{ listener: function () { return console.log("div4 click" + message); } }],
+                    click: [{ listener: function () { return console.log("div2 click" + message); } }],
                 },
             }),
             (0, CommonElements_js_1.Button)({

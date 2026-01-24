@@ -17,3 +17,5 @@ function createSpecificLibElement<T extends TagNameKeys>(tagName: T) {
 
 export const Div = createSpecificLibElement("div")
 export const Button = createSpecificLibElement("button")
+export const Ul = createSpecificLibElement("ul")
+export const Li = createSpecificLibElement("li")

@@ -18,6 +18,18 @@ var LibElement = /** @class */ (function () {
     LibElement.prototype.removeAttribute = function (key) {
         this.element.removeAttribute(key);
     };
+    LibElement.prototype.appendChild = function (node) {
+        this.element.appendChild(node.element);
+    };
+    LibElement.prototype.replaceWith = function (node) {
+        this.element.replaceWith(node.element);
+    };
+    LibElement.prototype.remove = function () {
+        this.element.remove();
+    };
+    LibElement.prototype.insertAdjacentElement = function (where, node) {
+        this.element.insertAdjacentElement(where, node.element);
+    };
     LibElement.prototype.toHTMLElement = function (tagName, optionals) {
         var element = document.createElement(tagName);
         if (!optionals)

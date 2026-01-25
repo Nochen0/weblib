@@ -7,14 +7,17 @@ function LibFor<T>(
   mapF: (x: T) => LibElement<"li">,
 ) {
   let prevState = state.get()
-  const list = prevState.map(mapF)
+  let list = prevState.map(mapF)
 
   state.addEffect((currentState) => {
     prevState.forEach((x, i) => {
       if (currentState[i] && currentState[i] !== x) {
-        list[i]!.replaceWith(mapF(currentState[i]))
+        const newItem = mapF(currentState[i])
+        list[i]!.replaceWith(newItem)
+        list[i] = newItem
       } else if (!currentState[i]) {
         list[i]!.remove()
+        list = list.filter((_, index) => index !== i)
       }
     })
 

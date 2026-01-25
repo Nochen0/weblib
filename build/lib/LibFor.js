@@ -6,10 +6,13 @@ function LibFor(state, parent, mapF) {
     state.addEffect(function (currentState) {
         prevState.forEach(function (x, i) {
             if (currentState[i] && currentState[i] !== x) {
-                list[i].replaceWith(mapF(currentState[i]));
+                var newItem = mapF(currentState[i]);
+                list[i].replaceWith(newItem);
+                list[i] = newItem;
             }
             else if (!currentState[i]) {
                 list[i].remove();
+                list = list.filter(function (_, index) { return index !== i; });
             }
         });
         if (currentState.length > prevState.length) {

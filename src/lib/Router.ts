@@ -27,18 +27,27 @@ class Router {
     )
   }
 
+  private buildAndReplace(page: Component | HTMLElement, route: string) {
+    if (page instanceof HTMLElement) {
+      return page
+    }
+
+    const builtTree = this.renderer.buildTree(page())
+    this.routeDescriptions.find((x) => x.route === route)!.page = builtTree
+
+    return builtTree
+  }
+
   private async init() {
     const pathname = location.pathname
     const page = this.match(pathname)
 
-    if (page instanceof HTMLElement) {
-      this.parent.appendChild(page)
-    } else {
-      this.parent.appendChild(this.renderer.buildTree(page()))
-    }
+    const builtElement = this.buildAndReplace(page, pathname)
+
+    this.parent.appendChild(builtElement)
   }
 
-  setup(descriptions: RouteDescriptions, parent?: HTMLElement) {
+  public setup(descriptions: RouteDescriptions, parent?: HTMLElement) {
     if (parent) {
       this.parent = parent
     }
@@ -50,7 +59,7 @@ class Router {
     this.init()
   }
 
-  async go(route: string, addToHistory = true) {
+  public async go(route: string, addToHistory = true) {
     if (location.pathname === route) return
 
     if (addToHistory) {
@@ -58,15 +67,11 @@ class Router {
     }
 
     const page = this.match(route)
-    if (page instanceof HTMLElement) {
-      this.parent.replaceChildren(page)
-    } else {
-      const builtElement = this.renderer.buildTree(page())
 
-      this.routeDescriptions.find((x) => x.route === route)!.page = builtElement
+    const builtElement = this.buildAndReplace(page, route)
 
-      this.parent.replaceChildren(builtElement)
-    }
+    this.parent.replaceChildren(builtElement)
+
     scrollX = 0
     scrollY = 0
   }

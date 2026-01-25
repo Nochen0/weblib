@@ -38,7 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var CommonElements_1 = require("../lib/CommonElements");
 var LibFor_1 = require("../lib/LibFor");
-var State_1 = require("../lib/State");
+var pokeState_1 = require("../state/pokeState");
+var ListItem_1 = require("./ListItem");
 function wait() {
     return __awaiter(this, arguments, void 0, function (ms) {
         if (ms === void 0) { ms = 1000; }
@@ -49,7 +50,7 @@ function wait() {
         });
     });
 }
-function loadPoke(pokeState) {
+function loadPoke() {
     return __awaiter(this, void 0, void 0, function () {
         var res, json, res2, json2;
         return __generator(this, function (_a) {
@@ -60,7 +61,7 @@ function loadPoke(pokeState) {
                     return [4 /*yield*/, res.json()];
                 case 2:
                     json = _a.sent();
-                    pokeState.set(json.abilities);
+                    pokeState_1.default.set(json.abilities);
                     return [4 /*yield*/, fetch("https://pokeapi.co/api/v2/pokemon/charizard")];
                 case 3:
                     res2 = _a.sent();
@@ -70,19 +71,18 @@ function loadPoke(pokeState) {
                     return [4 /*yield*/, wait()];
                 case 5:
                     _a.sent();
-                    pokeState.set(pokeState.get().concat(json2.abilities));
+                    pokeState_1.default.set(pokeState_1.default.get().concat(json2.abilities));
                     return [2 /*return*/];
             }
         });
     });
 }
 var List = function () {
-    var pokeState = new State_1.default([]);
     var ul = (0, CommonElements_1.Ul)();
-    loadPoke(pokeState);
+    loadPoke();
     return {
         elem: ul,
-        children: (0, LibFor_1.default)(pokeState, ul, function (x) { return (0, CommonElements_1.Li)({ textContent: x.ability.name }); }),
+        children: (0, LibFor_1.default)(pokeState_1.default, ul, function (x) { return (0, ListItem_1.default)({ name: x.ability.name }); }),
     };
 };
 exports.default = List;

@@ -53,18 +53,22 @@ var Router = /** @class */ (function () {
         })) === null || _a === void 0 ? void 0 : _a.page) ||
             this.errorPage);
     };
+    Router.prototype.buildAndReplace = function (page, route) {
+        if (page instanceof HTMLElement) {
+            return page;
+        }
+        var builtTree = this.renderer.buildTree(page());
+        this.routeDescriptions.find(function (x) { return x.route === route; }).page = builtTree;
+        return builtTree;
+    };
     Router.prototype.init = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var pathname, page;
+            var pathname, page, builtElement;
             return __generator(this, function (_a) {
                 pathname = location.pathname;
                 page = this.match(pathname);
-                if (page instanceof HTMLElement) {
-                    this.parent.appendChild(page);
-                }
-                else {
-                    this.parent.appendChild(this.renderer.buildTree(page()));
-                }
+                builtElement = this.buildAndReplace(page, pathname);
+                this.parent.appendChild(builtElement);
                 return [2 /*return*/];
             });
         });
@@ -92,14 +96,8 @@ var Router = /** @class */ (function () {
                     history.pushState({ route: route }, "", route);
                 }
                 page = this.match(route);
-                if (page instanceof HTMLElement) {
-                    this.parent.replaceChildren(page);
-                }
-                else {
-                    builtElement = this.renderer.buildTree(page());
-                    this.routeDescriptions.find(function (x) { return x.route === route; }).page = builtElement;
-                    this.parent.replaceChildren(builtElement);
-                }
+                builtElement = this.buildAndReplace(page, route);
+                this.parent.replaceChildren(builtElement);
                 scrollX = 0;
                 scrollY = 0;
                 return [2 /*return*/];

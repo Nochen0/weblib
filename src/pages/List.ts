@@ -1,13 +1,8 @@
-import { Li, Ul } from "../lib/CommonElements"
+import { Ul } from "../lib/CommonElements"
 import type { Component } from "../lib/Component"
 import LibFor from "../lib/LibFor"
-import State from "../lib/State"
-
-type PokeRes = {
-  ability: {
-    name: string
-  }
-}[]
+import pokeState from "../state/pokeState"
+import ListItem from "./ListItem"
 
 async function wait(ms: number = 1000) {
   return new Promise((resolve) => {
@@ -15,7 +10,7 @@ async function wait(ms: number = 1000) {
   })
 }
 
-async function loadPoke(pokeState: State<PokeRes>) {
+async function loadPoke() {
   const res = await fetch("https://pokeapi.co/api/v2/pokemon/ditto")
   const json = await res.json()
 
@@ -30,14 +25,13 @@ async function loadPoke(pokeState: State<PokeRes>) {
 }
 
 const List: Component = () => {
-  const pokeState = new State<PokeRes>([])
   const ul = Ul()
 
-  loadPoke(pokeState)
+  loadPoke()
 
   return {
     elem: ul,
-    children: LibFor(pokeState, ul, (x) => Li({ textContent: x.ability.name })),
+    children: LibFor(pokeState, ul, (x) => ListItem({ name: x.ability.name })),
   }
 }
 

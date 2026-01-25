@@ -15,23 +15,25 @@ async function wait(ms: number = 1000) {
   })
 }
 
+async function loadPoke(pokeState: State<PokeRes>) {
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon/ditto")
+  const json = await res.json()
+
+  pokeState.set(json.abilities)
+
+  const res2 = await fetch("https://pokeapi.co/api/v2/pokemon/charizard")
+  const json2 = await res2.json()
+
+  await wait()
+
+  pokeState.set(pokeState.get().concat(json2.abilities))
+}
+
 const List: Component = () => {
   const pokeState = new State<PokeRes>([])
   const ul = Ul()
 
-  ;(async function () {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon/ditto")
-    const json = await res.json()
-
-    pokeState.set(json.abilities)
-
-    const res2 = await fetch("https://pokeapi.co/api/v2/pokemon/charizard")
-    const json2 = await res2.json()
-
-    await wait()
-
-    pokeState.set(json2.abilities)
-  })()
+  loadPoke(pokeState)
 
   return {
     elem: ul,

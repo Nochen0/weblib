@@ -49,36 +49,37 @@ function wait() {
         });
     });
 }
+function loadPoke(pokeState) {
+    return __awaiter(this, void 0, void 0, function () {
+        var res, json, res2, json2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("https://pokeapi.co/api/v2/pokemon/ditto")];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, res.json()];
+                case 2:
+                    json = _a.sent();
+                    pokeState.set(json.abilities);
+                    return [4 /*yield*/, fetch("https://pokeapi.co/api/v2/pokemon/charizard")];
+                case 3:
+                    res2 = _a.sent();
+                    return [4 /*yield*/, res2.json()];
+                case 4:
+                    json2 = _a.sent();
+                    return [4 /*yield*/, wait()];
+                case 5:
+                    _a.sent();
+                    pokeState.set(pokeState.get().concat(json2.abilities));
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 var List = function () {
     var pokeState = new State_1.default([]);
     var ul = (0, CommonElements_1.Ul)();
-    (function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var res, json, res2, json2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("https://pokeapi.co/api/v2/pokemon/ditto")];
-                    case 1:
-                        res = _a.sent();
-                        return [4 /*yield*/, res.json()];
-                    case 2:
-                        json = _a.sent();
-                        pokeState.set(json.abilities);
-                        return [4 /*yield*/, fetch("https://pokeapi.co/api/v2/pokemon/charizard")];
-                    case 3:
-                        res2 = _a.sent();
-                        return [4 /*yield*/, res2.json()];
-                    case 4:
-                        json2 = _a.sent();
-                        return [4 /*yield*/, wait()];
-                    case 5:
-                        _a.sent();
-                        pokeState.set(json2.abilities);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    })();
+    loadPoke(pokeState);
     return {
         elem: ul,
         children: (0, LibFor_1.default)(pokeState, ul, function (x) { return (0, CommonElements_1.Li)({ textContent: x.ability.name }); }),

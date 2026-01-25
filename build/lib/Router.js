@@ -70,13 +70,14 @@ var Router = /** @class */ (function () {
         });
     };
     Router.prototype.setup = function (descriptions, parent) {
+        var _this = this;
         if (parent) {
             this.parent = parent;
         }
         history.replaceState({ route: location.pathname }, "", location.pathname);
         addEventListener("popstate", function (event) {
-            this.go(event.state.route, false);
-        }.bind(this));
+            _this.go(event.state.route, false);
+        });
         this.routeDescriptions = descriptions;
         this.init();
     };

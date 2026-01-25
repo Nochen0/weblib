@@ -43,12 +43,9 @@ class Router {
       this.parent = parent
     }
     history.replaceState({ route: location.pathname }, "", location.pathname)
-    addEventListener(
-      "popstate",
-      function (this: Router, event: PopStateEvent) {
-        this.go(event.state.route, false)
-      }.bind(this),
-    )
+    addEventListener("popstate", (event: PopStateEvent) => {
+      this.go(event.state.route, false)
+    })
     this.routeDescriptions = descriptions
     this.init()
   }
